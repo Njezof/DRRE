@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DRRE — Direction Royale du Renseignement Extérieur</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --gold:#c8a44e;
+  --gold-dim:rgba(200,164,78,0.5);
+  --gold-faint:rgba(200,164,78,0.08);
+  --gold-glow:rgba(200,164,78,0.15);
+  --navy:#060c1a;
+  --navy-2:#0b1428;
+  --navy-3:#101e38;
+  --navy-4:#162540;
+  --cream:#e4dcc8;
+  --cream-dim:#9a9180;
+  --cream-faint:rgba(228,220,200,0.5);
+}
+
+body{background:var(--navy);color:var(--cream);font-family:'Jost',sans-serif;font-weight:400;line-height:1.7;overflow-x:hidden}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--navy)}
+::-webkit-scrollbar-thumb{background:var(--gold-dim)}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content:space-between;align-items:center;padding:1.2rem 3rem;border-bottom:1px solid rgba(200,164,78,0.12)}
+nav::before{content:'';position:absolute;inset:0;background:rgba(6,12,26,0.92);backdrop-filter:blur(12px);z-index:-1}
+.nav-brand{display:flex;align-items:center;gap:1rem;text-decoration:none}
+.nav-code{font-family:'Cinzel',serif;font-size:1.3rem;font-weight:900;color:var(--gold);letter-spacing:0.15em}
+.nav-sep{width:1px;height:24px;background:rgba(200,164,78,0.25)}
+.nav-full{font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--cream-dim);max-width:200px;line-height:1.5}
+.nav-links{display:flex;gap:2.5rem;list-style:none}
+.nav-links a{color:var(--cream-dim);text-decoration:none;font-size:0.68rem;letter-spacing:0.25em;text-transform:uppercase;transition:color 0.25s}
+.nav-links a:hover{color:var(--gold)}
+.nav-badge{background:rgba(200,164,78,0.12);border:1px solid rgba(200,164,78,0.3);padding:0.25rem 0.75rem;font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.2em;color:var(--gold);cursor:pointer;text-decoration:none;transition:background 0.25s}
+.nav-badge:hover{background:rgba(200,164,78,0.2)}
+
+/* HERO */
+.hero{height:100vh;min-height:700px;display:grid;place-items:center;position:relative;overflow:hidden;text-align:center}
+.hero-bg{position:absolute;inset:0;z-index:0}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(200,164,78,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(200,164,78,0.04) 1px,transparent 1px);background-size:80px 80px}
+.hero-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:600px;background:radial-gradient(ellipse,rgba(200,164,78,0.07) 0%,transparent 70%);pointer-events:none}
+.hero-vignette{position:absolute;inset:0;background:radial-gradient(ellipse 70% 70% at 50% 50%,transparent 40%,var(--navy) 100%)}
+.hero-fade{position:absolute;bottom:0;left:0;right:0;height:250px;background:linear-gradient(transparent,var(--navy))}
+.hero-content{position:relative;z-index:10;display:flex;flex-direction:column;align-items:center;gap:0}
+.hero-watermark{position:absolute;font-family:'Cinzel',serif;font-size:clamp(6rem,18vw,14rem);font-weight:900;color:transparent;-webkit-text-stroke:1px rgba(200,164,78,0.07);letter-spacing:0.2em;white-space:nowrap;pointer-events:none;top:50%;left:50%;transform:translate(-50%,-50%)}
+.hero-kingdom{font-size:0.65rem;letter-spacing:0.5em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:2rem;animation:fadeUp 1.2s ease both}
+.hero-shield{width:110px;height:130px;margin-bottom:2rem;animation:fadeUp 1.2s 0.15s ease both;filter:drop-shadow(0 0 20px rgba(200,164,78,0.2))}
+.hero-agency{font-size:0.62rem;letter-spacing:0.45em;text-transform:uppercase;color:var(--cream-dim);margin-bottom:0.8rem;animation:fadeUp 1.2s 0.25s ease both}
+.hero-title{font-family:'Cinzel',serif;font-size:clamp(1.6rem,4vw,3rem);font-weight:700;color:var(--cream);line-height:1.15;margin-bottom:0.6rem;animation:fadeUp 1.2s 0.3s ease both}
+.hero-rule{width:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:1.5rem auto;animation:expandRule 1.5s 0.5s ease forwards}
+.hero-motto{font-family:'Crimson Text',Georgia,serif;font-style:italic;font-size:1.15rem;color:var(--cream-dim);letter-spacing:0.05em;animation:fadeUp 1.2s 0.6s ease both}
+.hero-year{display:flex;align-items:center;gap:1rem;margin-top:2.5rem;animation:fadeUp 1.2s 0.75s ease both}
+.hero-year span{font-size:0.62rem;letter-spacing:0.35em;text-transform:uppercase;color:rgba(200,164,78,0.4)}
+.hero-year::before,.hero-year::after{content:'';width:30px;height:1px;background:rgba(200,164,78,0.25)}
+
+/* SECTIONS */
+.section{padding:6rem 2rem;max-width:1100px;margin:0 auto}
+.section-meta{display:flex;align-items:center;gap:1rem;margin-bottom:0.75rem}
+.section-num{font-family:'Cinzel',serif;font-size:0.62rem;color:var(--gold);letter-spacing:0.3em}
+.section-line{height:1px;width:30px;background:rgba(200,164,78,0.4)}
+.section-label{font-size:0.62rem;letter-spacing:0.35em;text-transform:uppercase;color:var(--cream-dim)}
+.section-title{font-family:'Cinzel',serif;font-size:clamp(1.4rem,3vw,2.2rem);font-weight:600;color:var(--cream);margin-bottom:2.5rem;line-height:1.2}
+.section-title span{color:var(--gold)}
+
+/* ABOUT */
+.about-body{max-width:680px;color:var(--cream-dim);font-size:0.98rem;line-height:2}
+.about-body strong{color:var(--cream);font-weight:500}
+.about-body p+p{margin-top:1.2rem}
+
+/* MISSIONS */
+.missions-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1px;background:rgba(200,164,78,0.08);margin-top:0.5rem}
+.mission-card{background:var(--navy-2);padding:2.2rem 2rem;position:relative;overflow:hidden;transition:background 0.3s}
+.mission-card:hover{background:var(--navy-3)}
+.mission-card::after{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--gold);transform:scaleY(0);transform-origin:bottom;transition:transform 0.4s ease}
+.mission-card:hover::after{transform:scaleY(1)}
+.mission-n{font-family:'Cinzel',serif;font-size:3rem;font-weight:900;color:var(--gold-faint);line-height:1;position:absolute;top:1.2rem;right:1.5rem;transition:color 0.3s}
+.mission-card:hover .mission-n{color:rgba(200,164,78,0.12)}
+.mission-icon{margin-bottom:1.2rem;color:var(--gold);width:32px;height:32px;opacity:0.85}
+.mission-name{font-family:'Cinzel',serif;font-size:0.78rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem}
+.mission-list{list-style:none;font-size:0.82rem;color:var(--cream-dim);line-height:2}
+.mission-list li{padding-left:1.2rem;position:relative}
+.mission-list li::before{content:'›';position:absolute;left:0;color:rgba(200,164,78,0.5)}
+
+/* ORGANISATION */
+.org-wrapper{margin-top:0.5rem}
+.org-top{background:var(--navy-3);border:1px solid rgba(200,164,78,0.15);padding:1.5rem 2rem;display:flex;gap:2rem;align-items:center;margin-bottom:1px}
+.org-top-badge{font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(200,164,78,0.3);padding:0.3rem 0.8rem;white-space:nowrap}
+.org-top-text{font-size:0.88rem;color:var(--cream-dim)}
+.org-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1px;background:rgba(200,164,78,0.06)}
+.org-item{background:var(--navy-2);padding:1.5rem;transition:background 0.25s}
+.org-item:hover{background:var(--navy-3)}
+.org-dept{font-size:0.6rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);margin-bottom:0.5rem;opacity:0.7}
+.org-name{font-family:'Cinzel',serif;font-size:0.85rem;font-weight:600;color:var(--cream);margin-bottom:0.5rem;line-height:1.4}
+.org-desc{font-size:0.78rem;color:var(--cream-dim);line-height:1.7}
+
+/* STATS BAR */
+.stats-bar{background:var(--navy-2);border-top:1px solid rgba(200,164,78,0.1);border-bottom:1px solid rgba(200,164,78,0.1);padding:4rem 2rem}
+.stats-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:2rem}
+.stat{text-align:center;padding:1rem;border-right:1px solid rgba(200,164,78,0.07)}
+.stat:last-child{border-right:none}
+.stat-n{font-family:'Cinzel',serif;font-size:2.2rem;font-weight:700;color:var(--gold);letter-spacing:0.05em;margin-bottom:0.4rem}
+.stat-l{font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--cream-dim)}
+
+/* FOOTER */
+footer{background:#030710;border-top:1px solid rgba(200,164,78,0.08);padding:4rem 2rem;text-align:center}
+.footer-shield{width:50px;height:60px;margin:0 auto 1.5rem;opacity:0.4}
+.footer-code{font-family:'Cinzel',serif;font-size:1.8rem;font-weight:900;letter-spacing:0.25em;color:var(--gold);margin-bottom:0.4rem}
+.footer-name{font-size:0.65rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--cream-dim);margin-bottom:1.5rem}
+.footer-devises{display:flex;flex-direction:column;gap:0.5rem;margin-bottom:1.5rem}
+.footer-devise{font-family:'Crimson Text',serif;font-style:italic;font-size:1rem;color:rgba(200,164,78,0.5)}
+.footer-rule{width:80px;height:1px;background:rgba(200,164,78,0.12);margin:1.5rem auto}
+.footer-class{font-size:0.6rem;letter-spacing:0.3em;text-transform:uppercase;color:rgba(200,164,78,0.2);border:1px solid rgba(200,164,78,0.08);display:inline-block;padding:0.4rem 1.2rem}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+@keyframes expandRule{from{width:0;opacity:0}to{width:200px;opacity:1}}
+.reveal{opacity:0;transform:translateY(22px);transition:opacity 0.8s ease,transform 0.8s ease}
+.reveal.in{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:0.1s}
+.reveal-delay-2{transition-delay:0.2s}
+.reveal-delay-3{transition-delay:0.3s}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-brand" href="#">
+    <span class="nav-code">DRRE</span>
+    <span class="nav-sep"></span>
+    <span class="nav-full">Direction Royale du Renseignement Extérieur</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#missions">Missions</a></li>
+    <li><a href="#organisation">Organisation</a></li>
+    <li><a href="#effectifs">Effectifs</a></li>
+    <li><a class="nav-badge" href="drsi.html">DRSI →</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg">
+    <div class="hero-grid"></div>
+    <div class="hero-glow"></div>
+    <div class="hero-vignette"></div>
+    <div class="hero-fade"></div>
+    <div class="hero-watermark">DRRE</div>
+  </div>
+  <div class="hero-content">
+    <p class="hero-kingdom">Royaume de Black Reef</p>
+    <!-- Shield Emblem -->
+    <svg class="hero-shield" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="shieldGold" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#e8c96e"/>
+          <stop offset="100%" stop-color="#9a7030"/>
+        </linearGradient>
+      </defs>
+      <path d="M50 4L94 22V68C94 92 74 111 50 116C26 111 6 92 6 68V22Z" fill="rgba(200,164,78,0.06)" stroke="url(#shieldGold)" stroke-width="1.5"/>
+      <path d="M50 12L86 28V66C86 86 70 104 50 109C30 104 14 86 14 66V28Z" fill="none" stroke="rgba(200,164,78,0.2)" stroke-width="0.6"/>
+      <!-- Globe -->
+      <circle cx="50" cy="64" r="26" fill="none" stroke="rgba(200,164,78,0.8)" stroke-width="1"/>
+      <ellipse cx="50" cy="64" rx="13" ry="26" fill="none" stroke="rgba(200,164,78,0.45)" stroke-width="0.7"/>
+      <ellipse cx="50" cy="64" rx="26" ry="9" fill="none" stroke="rgba(200,164,78,0.45)" stroke-width="0.7"/>
+      <line x1="24" y1="64" x2="76" y2="64" stroke="rgba(200,164,78,0.35)" stroke-width="0.7"/>
+      <line x1="50" y1="38" x2="50" y2="90" stroke="rgba(200,164,78,0.35)" stroke-width="0.7"/>
+      <ellipse cx="50" cy="64" rx="26" ry="17" fill="none" stroke="rgba(200,164,78,0.25)" stroke-width="0.6"/>
+      <!-- Crown -->
+      <path d="M34 27 L38 20 L42 25 L50 17 L58 25 L62 20 L66 27 Z" fill="rgba(200,164,78,0.2)" stroke="#c8a44e" stroke-width="1" stroke-linejoin="round"/>
+      <line x1="34" y1="27" x2="66" y2="27" stroke="#c8a44e" stroke-width="1"/>
+    </svg>
+    <p class="hero-agency">Service de renseignement extérieur</p>
+    <h1 class="hero-title">Direction Royale du<br>Renseignement Extérieur</h1>
+    <div class="hero-rule"></div>
+    <p class="hero-motto">« Voir avant les autres. Agir avant les événements. »</p>
+    <div class="hero-year"><span>Fondée en 1972</span></div>
+  </div>
+</section>
+
+<!-- PRÉSENTATION -->
+<section class="section" id="presentation">
+  <div class="section-meta reveal">
+    <span class="section-num">01</span>
+    <span class="section-line"></span>
+    <span class="section-label">À propos de l'agence</span>
+  </div>
+  <h2 class="section-title reveal">Présentation de la <span>DRRE</span></h2>
+  <div class="about-body reveal">
+    <p>La <strong>Direction Royale du Renseignement Extérieur (DRRE)</strong> est l'agence chargée de la collecte, de l'analyse et de l'exploitation du renseignement à l'étranger pour le compte du <strong>Royaume de Black Reef</strong>.</p>
+    <p>Créée en <strong>1972</strong> à la suite d'une réforme majeure de la sécurité nationale, la DRRE constitue aujourd'hui l'un des principaux outils de défense des intérêts stratégiques du Royaume à travers le monde.</p>
+    <p>Sa mission est d'anticiper les menaces extérieures, de protéger les intérêts nationaux et d'éclairer les décisions des plus hautes autorités de l'État. Elle opère sous l'autorité du <strong>Conseil Royal du Renseignement</strong>, en coordination avec l'ensemble de la Communauté du Renseignement de Black Reef.</p>
+  </div>
+</section>
+
+<!-- MISSIONS -->
+<section class="section" id="missions" style="padding-top:2rem">
+  <div class="section-meta reveal">
+    <span class="section-num">02</span>
+    <span class="section-line"></span>
+    <span class="section-label">Domaines d'action</span>
+  </div>
+  <h2 class="section-title reveal">Nos <span>Missions</span></h2>
+  <div class="missions-grid">
+
+    <div class="mission-card reveal">
+      <span class="mission-n">01</span>
+      <svg class="mission-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+        <circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/>
+      </svg>
+      <p class="mission-name">Renseignement Stratégique</p>
+      <ul class="mission-list">
+        <li>Analyse des situations internationales</li>
+        <li>Évaluation des risques géopolitiques</li>
+        <li>Surveillance des menaces étrangères</li>
+      </ul>
+    </div>
+
+    <div class="mission-card reveal reveal-delay-1">
+      <span class="mission-n">02</span>
+      <svg class="mission-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+      </svg>
+      <p class="mission-name">Renseignement Humain (HUMINT)</p>
+      <ul class="mission-list">
+        <li>Réseaux de sources à l'étranger</li>
+        <li>Recrutement d'informateurs</li>
+        <li>Collecte clandestine d'informations</li>
+      </ul>
+    </div>
+
+    <div class="mission-card reveal reveal-delay-2">
+      <span class="mission-n">03</span>
+      <svg class="mission-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+      </svg>
+      <p class="mission-name">Renseignement Technique</p>
+      <ul class="mission-list">
+        <li>Interceptions de communications</li>
+        <li>Analyse de données stratégiques</li>
+        <li>Surveillance technologique avancée</li>
+      </ul>
+    </div>
+
+    <div class="mission-card reveal">
+      <span class="mission-n">04</span>
+      <svg class="mission-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        <line x1="12" y1="9" x2="12" y2="15"/><line x1="9" y1="12" x2="15" y2="12"/>
+      </svg>
+      <p class="mission-name">Contre-Ingérence Extérieure</p>
+      <ul class="mission-list">
+        <li>Détection des opérations étrangères visant Black Reef</li>
+        <li>Protection des intérêts du Royaume à l'étranger</li>
+      </ul>
+    </div>
+
+    <div class="mission-card reveal reveal-delay-1">
+      <span class="mission-n">05</span>
+      <svg class="mission-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+        <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+      </svg>
+      <p class="mission-name">Protection des Intérêts Nationaux</p>
+      <ul class="mission-list">
+        <li>Sécurité des ambassades</li>
+        <li>Protection des entreprises stratégiques</li>
+        <li>Sûreté des ressortissants du Royaume</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- ORGANISATION -->
+<section class="section" id="organisation" style="padding-top:2rem">
+  <div class="section-meta reveal">
+    <span class="section-num">03</span>
+    <span class="section-line"></span>
+    <span class="section-label">Structure interne</span>
+  </div>
+  <h2 class="section-title reveal"><span>Organisation</span> de la DRRE</h2>
+  <div class="org-wrapper reveal">
+    <div class="org-top">
+      <span class="org-top-badge">Direction Générale</span>
+      <span class="org-top-text">Coordination globale des opérations et supervision stratégique de l'ensemble des activités de renseignement extérieur.</span>
+    </div>
+    <div class="org-grid">
+      <div class="org-item">
+        <p class="org-dept">Opérations</p>
+        <p class="org-name">Direction des Opérations Extérieures</p>
+        <p class="org-desc">Conduit les missions de terrain à l'étranger et gère les réseaux d'agents.</p>
+      </div>
+      <div class="org-item">
+        <p class="org-dept">Analyse</p>
+        <p class="org-name">Direction de l'Analyse Stratégique</p>
+        <p class="org-desc">Produit les rapports de renseignement destinés au gouvernement royal.</p>
+      </div>
+      <div class="org-item">
+        <p class="org-dept">Technique</p>
+        <p class="org-name">Direction Technique</p>
+        <p class="org-desc">Exploite les capacités technologiques, cybernétiques et d'interception.</p>
+      </div>
+      <div class="org-item">
+        <p class="org-dept">Surveillance</p>
+        <p class="org-name">Centre de Crise Internationale</p>
+        <p class="org-desc">Veille permanente 24/7 sur les événements mondiaux susceptibles d'affecter le Royaume.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar" id="effectifs">
+  <div class="stats-inner">
+    <div class="stat reveal">
+      <p class="stat-n">12 000</p>
+      <p class="stat-l">Agents & Analystes</p>
+    </div>
+    <div class="stat reveal reveal-delay-1">
+      <p class="stat-n">1972</p>
+      <p class="stat-l">Année de fondation</p>
+    </div>
+    <div class="stat reveal reveal-delay-2">
+      <p class="stat-n">Mondial</p>
+      <p class="stat-l">Couverture géographique</p>
+    </div>
+    <div class="stat reveal reveal-delay-3">
+      <p class="stat-n">24 / 7</p>
+      <p class="stat-l">Opérations continues</p>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <svg class="footer-shield" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+    <path d="M50 4L94 22V68C94 92 74 111 50 116C26 111 6 92 6 68V22Z" fill="none" stroke="#c8a44e" stroke-width="1.5"/>
+    <circle cx="50" cy="68" r="22" fill="none" stroke="#c8a44e" stroke-width="1"/>
+    <ellipse cx="50" cy="68" rx="11" ry="22" fill="none" stroke="rgba(200,164,78,0.5)" stroke-width="0.7"/>
+    <ellipse cx="50" cy="68" rx="22" ry="8" fill="none" stroke="rgba(200,164,78,0.5)" stroke-width="0.7"/>
+  </svg>
+  <p class="footer-code">DRRE</p>
+  <p class="footer-name">Direction Royale du Renseignement Extérieur — Royaume de Black Reef</p>
+  <div class="footer-devises">
+    <p class="footer-devise">« Voir avant les autres. Agir avant les événements. »</p>
+    <p class="footer-devise">« Dans l'ombre pour protéger le Royaume. »</p>
+  </div>
+  <div class="footer-rule"></div>
+  <span class="footer-class">Document officiel — Usage restreint — CRBR</span>
+</footer>
+
+<script>
+const obs = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('in'), i * 60);
+      obs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
